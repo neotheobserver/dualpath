@@ -1,0 +1,6 @@
+plan_id,plan_name,metal_tier,deductible_individual,deductible_family,oop_max_individual,coinsurance_rate,pcp_copay,specialist_copay,er_copay,urgent_care_copay,rx_generic_copay,rx_brand_copay,monthly_premium
+CH-BRZ-6500,Cascade Bronze 6500,Bronze,6500,13000,9200,0.4,45,90,600,75,20,70,289.0
+CH-SLV-3500,Cascade Silver 3500,Silver,3500,7000,8000,0.3,30,60,450,60,15,55,412.0
+CH-SLV-HSA4,Cascade Silver HSA 4000,Silver,4000,8000,7500,0.25,0,0,400,50,10,50,398.0
+CH-GLD-1500,Cascade Gold 1500,Gold,1500,3000,6000,0.2,25,50,350,40,10,45,561.0
+CH-PLT-500,Cascade Platinum 500,Platinum,500,1000,3500,0.1,15,30,250,25,5,35,742.0

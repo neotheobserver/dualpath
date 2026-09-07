@@ -1,0 +1,65 @@
+provider_id,provider_name,specialty,network_status,state,city
+P5001,Cedar Hollow Internal Medicine,Internal Medicine,in_network,ID,Coeur d'Alene
+P5002,Ferncliff Children's Clinic,Pediatrics,out_of_network,ID,Coeur d'Alene
+P5003,Pinehurst Heart Center,Cardiology,in_network,ID,Boise
+P5004,Harbor Point Orthopedics,Orthopedics,in_network,OR,Bend
+P5005,Cedar Hollow Skin Clinic,Dermatology,in_network,WA,Seattle
+P5006,Northgate Imaging Center,Radiology,in_network,OR,Eugene
+P5007,Marbury Medical Center,Emergency Medicine,in_network,OR,Portland
+P5008,Jessup Counseling Center,Behavioral Health,in_network,OR,Portland
+P5009,Foxglove Rehab Services,Physical Therapy,in_network,OR,Bend
+P5010,Windrow Gastroenterology,Gastroenterology,out_of_network,OR,Salem
+P5011,Pinehurst Endocrinology,Endocrinology,in_network,WA,Spokane
+P5012,Ferncliff Pharmacy,Pharmacy,in_network,OR,Salem
+P5013,Bluestem Primary Care,Family Medicine,out_of_network,OR,Salem
+P5014,Silver Lake Adult Medicine,Internal Medicine,in_network,OR,Eugene
+P5015,Foxglove Pediatrics,Pediatrics,in_network,OR,Portland
+P5016,Gloaming Heart Center,Cardiology,out_of_network,WA,Olympia
+P5017,Duskwood Orthopedics,Orthopedics,in_network,ID,Boise
+P5018,Granite Falls Dermatology,Dermatology,in_network,ID,Coeur d'Alene
+P5019,Alder Creek Radiology,Radiology,in_network,WA,Seattle
+P5020,Kirkfield Medical Center,Emergency Medicine,out_of_network,ID,Coeur d'Alene
+P5021,Silver Lake Behavioral Health,Behavioral Health,in_network,WA,Olympia
+P5022,Fairhaven Physical Therapy,Physical Therapy,in_network,ID,Boise
+P5023,Bluestem Digestive Health,Gastroenterology,in_network,OR,Salem
+P5024,Belmont Park Endocrinology,Endocrinology,in_network,ID,Coeur d'Alene
+P5025,Hartwell Apothecary,Pharmacy,in_network,WA,Bellingham
+P5026,Windrow Family Health,Family Medicine,in_network,WA,Bellingham
+P5027,Emberly Internal Medicine,Internal Medicine,in_network,WA,Bellingham
+P5028,Marbury Heart Center,Cardiology,in_network,OR,Salem
+P5029,Kirkfield Bone & Joint,Orthopedics,in_network,ID,Coeur d'Alene
+P5030,Kirkfield Skin Clinic,Dermatology,out_of_network,ID,Coeur d'Alene
+P5031,Duskwood Radiology,Radiology,in_network,OR,Portland
+P5032,Ivyridge Regional Hospital,Emergency Medicine,in_network,OR,Salem
+P5033,Ivyridge Counseling Center,Behavioral Health,out_of_network,ID,Boise
+P5034,Northgate Physical Therapy,Physical Therapy,out_of_network,ID,Boise
+P5035,Hartwell Digestive Health,Gastroenterology,out_of_network,ID,Coeur d'Alene
+P5036,Cedar Hollow Endocrinology,Endocrinology,out_of_network,OR,Bend
+P5037,Silver Lake Apothecary,Pharmacy,out_of_network,ID,Coeur d'Alene
+P5038,Summit Ridge Internal Medicine,Internal Medicine,out_of_network,WA,Bellingham
+P5039,Granite Falls Children's Clinic,Pediatrics,in_network,WA,Seattle
+P5040,Fairhaven Cardiology,Cardiology,in_network,OR,Eugene
+P5041,Kirkfield Orthopedics,Orthopedics,out_of_network,OR,Portland
+P5042,Copperfield Dermatology,Dermatology,in_network,WA,Bellingham
+P5043,Larkspur Radiology,Radiology,in_network,WA,Spokane
+P5044,Belmont Park Regional Hospital,Emergency Medicine,in_network,WA,Seattle
+P5045,Riverstone Behavioral Health,Behavioral Health,in_network,OR,Eugene
+P5046,Harbor Point Physical Therapy,Physical Therapy,in_network,ID,Boise
+P5047,Pinehurst Gastroenterology,Gastroenterology,out_of_network,OR,Portland
+P5048,Riverstone Endocrinology,Endocrinology,in_network,ID,Boise
+P5049,Gloaming Pharmacy,Pharmacy,in_network,WA,Tacoma
+P5050,Granite Falls Primary Care,Family Medicine,in_network,WA,Seattle
+P5051,Copperfield Internal Medicine,Internal Medicine,in_network,OR,Salem
+P5052,Cedar Hollow Children's Clinic,Pediatrics,out_of_network,OR,Bend
+P5053,Hartwell Heart Center,Cardiology,out_of_network,WA,Tacoma
+P5054,Silver Lake Orthopedics,Orthopedics,in_network,OR,Eugene
+P5055,Belmont Park Skin Clinic,Dermatology,in_network,WA,Seattle
+P5056,Riverstone Imaging Center,Radiology,in_network,ID,Coeur d'Alene
+P5057,Summit Ridge Regional Hospital,Emergency Medicine,in_network,ID,Boise
+P5058,Riverstone Counseling Center,Behavioral Health,in_network,WA,Bellingham
+P5059,Windrow Physical Therapy,Physical Therapy,in_network,ID,Boise
+P5060,Fairhaven Gastroenterology,Gastroenterology,in_network,ID,Coeur d'Alene
+P5061,Ferncliff Endocrinology,Endocrinology,in_network,WA,Spokane
+P5062,Emberly Apothecary,Pharmacy,in_network,ID,Coeur d'Alene
+P5063,Jessup Primary Care,Family Medicine,in_network,ID,Boise
+P5064,Ashfield Adult Medicine,Internal Medicine,out_of_network,OR,Salem

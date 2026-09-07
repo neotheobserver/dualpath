@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dualpath"
+version = "1.0.0"
+description = "Agentic RAG over structured and unstructured data: a LangGraph state machine that routes between text-to-SQL and vector retrieval, with a SQL firewall and self-repair."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Ardent Sharma" }]
+dynamic = ["dependencies"]
+
+[project.scripts]
+dualpath = "dualpath.cli:app"
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools.packages.find]
+where = ["src"]

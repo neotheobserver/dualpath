@@ -1,0 +1,11 @@
+denial_code,short_description,category,is_appealable,appeal_window_days,typical_resolution
+DN-PRIOR-AUTH,Service requires prior authorization that was not on file,Administrative,1,180,Submit a retrospective authorization request with clinical notes within 90 days of service.
+DN-OON,Provider is outside the plan network,Network,1,180,"Request a network gap exception, or resubmit with documentation of an emergency."
+DN-NOT-COVERED,Service is excluded under the member's plan,Benefit,1,180,Confirm the exclusion in the plan policy; appeal only with evidence of medical necessity.
+DN-MED-NEC,Service not medically necessary per clinical policy,Clinical,1,180,Appeal with chart notes and failed-conservative-therapy documentation.
+DN-REFERRAL,Specialist visit without a required PCP referral,Administrative,1,180,Obtain a backdated referral from the PCP where the plan permits it.
+DN-DUPLICATE,Duplicate of a previously adjudicated claim,Administrative,0,0,No appeal required; the original claim stands.
+DN-ELIGIBILITY,Member was not enrolled on the date of service,Eligibility,1,180,Provide proof of enrollment or correct the date of service.
+DN-TIMELY,Claim received after the timely filing deadline,Administrative,1,90,Appeal only with proof of timely original submission.
+DN-CODING,"Procedure code invalid, unbundled, or inconsistent with diagnosis",Coding,0,0,Provider corrects and resubmits as a replacement claim.
+DN-FORMULARY,Drug is not on the plan formulary,Pharmacy,1,180,Request a formulary exception with a prescriber statement.

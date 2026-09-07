@@ -1,0 +1,95 @@
+{
+  "claims": {
+    "description": "One row per adjudicated claim header. This is the fact table for all spend, denial and utilisation questions.\nFinancial rules that always hold:\n  - plan_paid is what the plan paid; member_responsibility is what the member owes.\n  - For PAID claims from an in-network provider: plan_paid + member_responsibility = allowed_amount.\n  - For PAID claims from an out-of-network provider the member is also balance-billed the difference between billed_amount and allowed_amount, so plan_paid + member_responsibility = billed_amount instead.\n  - DENIED and PENDING claims have allowed_amount = 0 and plan_paid = 0. Always filter on status before summing money.",
+    "types": {
+      "place_of_service": "VARCHAR"
+    },
+    "columns": {
+      "claim_id": "VARCHAR primary key, format 'CLM-100001'.",
+      "member_id": "VARCHAR foreign key to members.member_id.",
+      "provider_id": "VARCHAR foreign key to providers.provider_id.",
+      "plan_id": "VARCHAR foreign key to plans.plan_id; the plan in force for the member.",
+      "claim_type": "VARCHAR, one of 'professional', 'facility', 'pharmacy'.",
+      "place_of_service": "VARCHAR CMS place-of-service code: '11' office, '22' outpatient hospital, '23' emergency room, '24' ambulatory surgical centre, '81' independent laboratory. Compare as text, never as a number.",
+      "service_date": "DATE the care was delivered. Use this for utilisation and trend questions.",
+      "received_date": "DATE the claim arrived at the plan. Use this for timely-filing questions.",
+      "paid_date": "DATE the claim finished adjudication; NULL while status = 'pending'. Use this for cash-flow and turnaround questions.",
+      "status": "VARCHAR, one of 'paid', 'denied', 'pending'. Always filter on this before summing money.",
+      "billed_amount": "DOUBLE, what the provider charged.",
+      "allowed_amount": "DOUBLE, the contracted amount the plan recognises. 0 for denied and pending claims.",
+      "plan_paid": "DOUBLE, the plan's share. Sum this to answer 'how much did we pay'.",
+      "member_responsibility": "DOUBLE, the member's share (copay, coinsurance, or -- out of network -- also the balance above the allowed amount).",
+      "denial_code": "VARCHAR foreign key to denial_codes.denial_code. NULL unless status = 'denied', so use 'denial_code IS NOT NULL' rather than comparing to an empty string."
+    }
+  },
+  "claim_lines": {
+    "description": "One row per service line within a claim. Join to claims on claim_id. Use this table -- not claims -- for anything about specific procedures or diagnoses. Line amounts sum to the claim header amounts.",
+    "columns": {
+      "claim_line_id": "VARCHAR primary key, format 'CL-200001'.",
+      "claim_id": "VARCHAR foreign key to claims.claim_id.",
+      "line_number": "BIGINT sequence within the claim, starting at 1.",
+      "procedure_code": "VARCHAR CPT or HCPCS code, e.g. '99213', 'J1885'. Never cast to a number.",
+      "procedure_desc": "VARCHAR human-readable procedure description.",
+      "diagnosis_code": "VARCHAR ICD-10-CM code, e.g. 'E11.9'.",
+      "units": "BIGINT count of units billed on the line.",
+      "billed_amount": "DOUBLE charged for this line.",
+      "allowed_amount": "DOUBLE allowed for this line; 0 unless the parent claim is paid."
+    }
+  },
+  "members": {
+    "description": "One row per enrolled member. Fully synthetic and de-identified: there are no names, addresses or dates of birth, only a birth year. A member with an empty enrollment_end is still enrolled.",
+    "columns": {
+      "member_id": "VARCHAR primary key, format 'M100001'.",
+      "birth_year": "BIGINT year of birth. Approximate age = 2025 - birth_year.",
+      "gender": "VARCHAR, 'F', 'M' or 'X'.",
+      "state": "VARCHAR two-letter state code: WA, OR or ID.",
+      "city": "VARCHAR city of residence.",
+      "plan_id": "VARCHAR foreign key to plans.plan_id.",
+      "enrollment_start": "DATE coverage began.",
+      "enrollment_end": "DATE coverage ended, NULL if still enrolled. Test with IS NULL.",
+      "risk_score": "DOUBLE morbidity index; 1.0 is average. Higher means sicker.",
+      "is_active": "BIGINT, 1 if currently enrolled, else 0."
+    }
+  },
+  "providers": {
+    "description": "One row per contracted or non-contracted provider organisation. All names are fictional.",
+    "columns": {
+      "provider_id": "VARCHAR primary key, format 'P5001'.",
+      "provider_name": "VARCHAR fictional practice name.",
+      "specialty": "VARCHAR clinical specialty, e.g. 'Cardiology', 'Physical Therapy'.",
+      "network_status": "VARCHAR, 'in_network' or 'out_of_network'. Out-of-network claims deny more often and cost members more.",
+      "state": "VARCHAR two-letter state code.",
+      "city": "VARCHAR practice city."
+    }
+  },
+  "plans": {
+    "description": "One row per benefit plan design. The numeric benefit values here are the authoritative cost-sharing amounts; the policy documents describe the rules in prose. When a question asks for a dollar figure, prefer this table over the documents.",
+    "columns": {
+      "plan_id": "VARCHAR primary key, e.g. 'CH-GLD-1500'.",
+      "plan_name": "VARCHAR marketing name, e.g. 'Cascade Gold 1500'.",
+      "metal_tier": "VARCHAR, 'Bronze', 'Silver', 'Gold' or 'Platinum'.",
+      "deductible_individual": "BIGINT annual individual deductible, in dollars.",
+      "deductible_family": "BIGINT annual family deductible, in dollars.",
+      "oop_max_individual": "BIGINT annual individual out-of-pocket maximum, in dollars.",
+      "coinsurance_rate": "DOUBLE member coinsurance after deductible, as a fraction (0.20 = 20%).",
+      "pcp_copay": "BIGINT primary-care visit copay, in dollars. 0 on the HSA plan, which uses coinsurance instead.",
+      "specialist_copay": "BIGINT specialist visit copay, in dollars.",
+      "er_copay": "BIGINT emergency room copay, in dollars.",
+      "urgent_care_copay": "BIGINT urgent care copay, in dollars.",
+      "rx_generic_copay": "BIGINT generic prescription copay, in dollars.",
+      "rx_brand_copay": "BIGINT brand prescription copay, in dollars.",
+      "monthly_premium": "DOUBLE monthly premium, in dollars."
+    }
+  },
+  "denial_codes": {
+    "description": "Lookup table describing each denial reason, its category, and whether it can be appealed. Join from claims.denial_code to translate a code into something a human can act on.",
+    "columns": {
+      "denial_code": "VARCHAR primary key, e.g. 'DN-PRIOR-AUTH'.",
+      "short_description": "VARCHAR one-line explanation of the denial.",
+      "category": "VARCHAR, one of 'Administrative', 'Network', 'Benefit', 'Clinical', 'Eligibility', 'Coding', 'Pharmacy'.",
+      "is_appealable": "BIGINT, 1 if the denial can be appealed, else 0.",
+      "appeal_window_days": "BIGINT days the member has to file an appeal; 0 when not appealable.",
+      "typical_resolution": "VARCHAR standard operational next step for this denial."
+    }
+  }
+}

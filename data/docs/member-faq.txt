@@ -1,0 +1,54 @@
+CASCADE HEALTH PLAN - MEMBER QUESTIONS AND ANSWERS
+Updated January 2026
+
+Q: How do I find out whether a service needs prior authorization?
+A: Check the prior authorization list in your member portal, or call Member
+Services at the number on your card. Advanced imaging such as MRI, CT and PET
+requires authorization. Standard X-rays and ultrasound do not. Your provider
+usually submits the request on your behalf, but the responsibility for
+confirming that authorization exists is shared - if the service is performed
+without it, the claim may be denied and you may be responsible for the charge.
+
+Q: My claim was denied. How long do I have to do something about it?
+A: You have 180 calendar days from the date on your Explanation of Benefits to
+file a first-level appeal. Do not wait for the paper copy to arrive; the clock
+starts on the EOB date, not the date you opened the envelope. Expedited review
+is available in 72 hours where a delay would seriously jeopardise your health.
+
+Q: What is the difference between an appeal and a grievance?
+A: An appeal disputes a coverage or payment decision - you want the decision
+changed. A grievance is a complaint about service quality, access or conduct,
+and does not change a payment decision. Filing the wrong one costs you time,
+because the two go to different teams.
+
+Q: What does "allowed amount" mean on my Explanation of Benefits?
+A: The allowed amount is the maximum the plan recognises for a service under
+its contract with that provider. It is almost always lower than the billed
+charge. Your cost sharing - deductible, copay, coinsurance - is calculated on
+the allowed amount, not the billed charge. An in-network provider agrees to
+write off the difference. An out-of-network provider does not have to, and may
+bill you for it.
+
+Q: Does hitting my deductible mean everything is free after that?
+A: No. After the deductible you still pay coinsurance, and copays continue to
+apply. What ends cost sharing entirely is the out-of-pocket maximum. Copays do
+not count toward the deductible but they do count toward the out-of-pocket
+maximum, which is the detail most often misunderstood.
+
+Q: I was treated at an emergency room outside the network. Am I covered?
+A: Emergency care is covered at the in-network cost-sharing level regardless of
+where you are treated. You do not need prior authorization for an emergency.
+Follow-up care after you are stabilised is subject to the ordinary network
+rules, so arrange it with an in-network provider where you can.
+
+Q: How long does the plan have to pay a clean claim?
+A: Ninety per cent of clean electronic claims are adjudicated within 15
+calendar days and ninety-nine per cent within 30. A claim missing required
+information is not a clean claim, and the clock restarts when the missing
+information arrives.
+
+Q: Can I see a specialist without a referral?
+A: On PPO plans, yes. On the HMO plan a referral from your primary care
+provider is required for most specialist visits, and a claim submitted without
+one may be denied. Behavioural health, obstetric and gynaecological care, and
+emergency care never require a referral.
