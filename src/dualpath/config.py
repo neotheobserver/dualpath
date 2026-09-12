@@ -30,6 +30,14 @@ class Settings(BaseSettings):
     )
     docs_dir: Path = Field(default=REPO_ROOT / "data" / "docs", validation_alias="DP_DOCS_DIR")
 
+    warehouse_path: Path = Field(
+        default=REPO_ROOT / "storage" / "warehouse.duckdb",
+        validation_alias="DP_WAREHOUSE_PATH",
+    )
+
+    sql_max_rows: int = Field(default=200, gt=0, le=100_000, validation_alias="DP_SQL_MAX_ROWS")
+    sql_allow_multiple: bool = Field(default=False, validation_alias="DP_SQL_ALLOW_MULTIPLE")
+    
     def redacted(self) -> dict[str, object]:
         out: dict[str, object] = {}
         for name, value in self.model_dump().items():

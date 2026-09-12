@@ -9,3 +9,8 @@ venv/
 .env
 
 .vscode/
+
+storage/
+scratch/
+*.duckdb
+*.duckdb.wal
