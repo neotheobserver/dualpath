@@ -43,3 +43,21 @@ class GuardVerdict(BaseModel):
         if self.allowed:
             return "allowed"
         return "; ".join(f"{v.rule}: {v.detail}" for v in self.violations)
+
+class Passage(BaseModel):
+    text: str
+    source: str
+    section: str = ""
+    score: float = 0.0
+
+    def citation(self) -> str:
+        return f"{self.source} > {self.section}" if self.section else self.source
+
+    @classmethod
+    def from_document(cls, document: Any, score: float = 0.0) -> Passage:
+        return cls(
+            text=document.page_content,
+            source=document.metadata.get("source", ""),
+            section=document.metadata.get("section", ""),
+            score=score,
+        )

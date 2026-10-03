@@ -14,3 +14,4 @@ storage/
 scratch/
 *.duckdb
 *.duckdb.wal
+.fastembed_cache/
