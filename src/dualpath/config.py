@@ -4,16 +4,15 @@ import functools
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, ValidationInfo
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-SECRET_FIELDS: frozenset[str] = frozenset()
-
 LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR"]
+StructuredMethod = Literal["json_schema", "json_mode", "function_calling"]
 ChromaMode = Literal["local", "server", "cloud", "memory"]
-SECRET_FIELDS: frozenset[str] = frozenset({"chroma_api_key"})
+SECRET_FIELDS: frozenset[str] = frozenset({"chroma_api_key", "groq_api_key"})
 
 class Settings(BaseSettings):
 
@@ -39,6 +38,7 @@ class Settings(BaseSettings):
 
     sql_max_rows: int = Field(default=200, gt=0, le=100_000, validation_alias="DP_SQL_MAX_ROWS")
     sql_allow_multiple: bool = Field(default=False, validation_alias="DP_SQL_ALLOW_MULTIPLE")
+    sql_max_seconds: float = Field(default=20.0, gt=0, validation_alias="DP_SQL_MAX_SECONDS")
 
     chunk_tokens: int = Field(default=400, gt=50, validation_alias="DP_CHUNK_TOKENS")
     chunk_overlap: int = Field(default=60, ge=0, validation_alias="DP_CHUNK_OVERLAP")
@@ -83,6 +83,58 @@ class Settings(BaseSettings):
         default=REPO_ROOT / "storage" / "records.sqlite",
         validation_alias="DP_RECORD_MANAGER_PATH",
     )
+
+    groq_api_key: str = Field(default="", validation_alias="GROQ_API_KEY")
+
+    gen_model: str = Field(default="llama-3.3-70b-versatile", validation_alias="DP_GEN_MODEL")
+    sql_model: str = Field(default="llama-3.3-70b-versatile", validation_alias="DP_SQL_MODEL")
+    util_model: str = Field(default="llama-3.1-8b-instant", validation_alias="DP_UTIL_MODEL")
+    temperature: float = Field(default=0.0, ge=0.0, le=2.0, validation_alias="DP_TEMPERATURE")
+    gen_temperature: float = Field(
+        default=0.1, ge=0.0, le=2.0, validation_alias="DP_GEN_TEMPERATURE"
+    )
+    max_tokens: int = Field(default=1600, gt=0, validation_alias="DP_MAX_TOKENS")
+    request_timeout: float = Field(default=60.0, gt=0, validation_alias="DP_REQUEST_TIMEOUT")
+    max_retries: int = Field(default=4, ge=0, le=10, validation_alias="DP_MAX_RETRIES")
+    structured_method: StructuredMethod = Field(
+        default="json_schema", validation_alias="DP_STRUCTURED_METHOD"
+    )
+
+    domain_description: str = Field(
+        default=(
+            "Health-plan claims data and member benefit policy documents "
+            "for Cascade Health Plan."
+        ),
+        validation_alias="DP_DOMAIN_DESCRIPTION",
+    )
+
+    enable_contextualize: bool = Field(
+        default=True, validation_alias="DP_ENABLE_CONTEXTUALIZE"
+    )
+    enable_critique: bool = Field(default=True, validation_alias="DP_ENABLE_CRITIQUE")
+    max_replans: int = Field(default=1, ge=0, le=3, validation_alias="DP_MAX_REPLANS")
+    sql_max_repairs: int = Field(default=3, ge=0, le=10, validation_alias="DP_SQL_MAX_REPAIRS")
+    recursion_limit: int = Field(default=40, gt=0, validation_alias="DP_RECURSION_LIMIT")
+    history_turns: int = Field(default=6, ge=0, validation_alias="DP_HISTORY_TURNS")
+
+    memory_enabled: bool = Field(default=True, validation_alias="DP_MEMORY_ENABLED")
+    memory_path: Path = Field(
+        default=REPO_ROOT / "storage" / "checkpoints.sqlite",
+        validation_alias="DP_MEMORY_PATH",
+    )
+
+    require_sql_approval: bool = Field(
+        default=False, validation_alias="DP_REQUIRE_SQL_APPROVAL"
+    )
+
+    api_host: str = Field(default="0.0.0.0", validation_alias="DP_API_HOST")
+    api_port: int = Field(default=8000, validation_alias="DP_API_PORT")
+    api_url: str = Field(default="http://localhost:8000", validation_alias="DP_API_URL")
+    
+    @property
+    def has_groq_key(self) -> bool:
+        key = self.groq_api_key.strip()
+        return bool(key) and "replace" not in key.lower() and key != "random_key"
 
     def redacted(self) -> dict[str, object]:
         out: dict[str, object] = {}

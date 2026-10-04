@@ -15,3 +15,5 @@ scratch/
 *.duckdb
 *.duckdb.wal
 .fastembed_cache/
+checkpoints.sqlite
+checkpoints.sqlite-*

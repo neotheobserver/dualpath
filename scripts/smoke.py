@@ -82,6 +82,54 @@ MUST_ALLOW: list[tuple[str, str]] = [
 ]
 
 
+ENGINE_MUST_REFUSE = [
+    ("read_csv_auto", "SELECT * FROM read_csv_auto('/etc/passwd')"),
+    ("glob", "SELECT * FROM glob('/*')"),
+    ("copy_to", "COPY claims TO '/tmp/leak.csv'"),
+    ("attach", "ATTACH '/tmp/other.duckdb' AS other"),
+    ("install", "INSTALL httpfs"),
+    ("write", "CREATE TABLE evil (x INT)"),
+]
+
+
+def check_engine(settings) -> list[str]:
+    import json
+
+    from dualpath.sql.engine import SqlExecutionError, WarehouseEngine
+
+    failures: list[str] = []
+    with WarehouseEngine(
+        settings.warehouse_path,
+        docs_dir=settings.warehouse_csv_dir,
+        max_seconds=settings.sql_max_seconds,
+        max_rows=settings.sql_max_rows,
+    ) as engine:
+        for label, sql in ENGINE_MUST_REFUSE:
+            try:
+                engine.execute(sql)
+                failures.append(f"ENGINE DID NOT REFUSE: {label}")
+            except SqlExecutionError:
+                pass
+
+        result = engine.execute(f"SELECT * FROM claim_lines LIMIT {settings.sql_max_rows * 100}")
+        if result.row_count > settings.sql_max_rows:
+            failures.append(f"ROW CAP EXCEEDED: {result.row_count} > {settings.sql_max_rows}")
+        if not result.truncated:
+            failures.append("TRUNCATION NOT FLAGGED")
+
+        row = engine.execute(
+            "SELECT date_trunc('month', service_date) AS m, sum(plan_paid) AS paid "
+            "FROM claims WHERE status = 'paid' GROUP BY 1 ORDER BY 1 LIMIT 3"
+        )
+        try:
+            json.dumps(row.rows)
+        except TypeError as exc:
+            failures.append(f"RESULT NOT JSON-SAFE: {exc}")
+
+    print(f"  engine: {len(ENGINE_MUST_REFUSE)} statements refused, row cap and coercion checked")
+    return failures
+
+
 def main() -> int:
     settings = get_settings()
     if not settings.warehouse_path.exists():
@@ -115,13 +163,15 @@ def main() -> int:
 
     print(f"  firewall: {len(MUST_BLOCK)} attacks blocked, {len(MUST_ALLOW)} legitimate allowed")
 
+    failures.extend(check_engine(settings))
+
     if failures:
         print(f"\n  {len(failures)} FAILURE(S):", file=sys.stderr)
         for line in failures:
             print(f"    {line}", file=sys.stderr)
         return 1
 
-    print("  all firewall checks passed")
+    print("  all checks passed")
     return 0
 
 
